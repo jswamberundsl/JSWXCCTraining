@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sample Web Page</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: rgba(255,255,255,0.06);
+      --text: #e8ecff;
+      --muted: rgba(232,236,255,0.75);
+      --accent: #6aa7ff;
+      --border: rgba(255,255,255,0.12);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 20% 10%, rgba(106,167,255,0.25), transparent 60%),
+                  radial-gradient(900px 600px at 80% 30%, rgba(120,255,214,0.12), transparent 55%),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .container { width: min(1100px, 92vw); margin: 0 auto; }
+
+    /* Navbar */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      background: rgba(11,16,32,0.65);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+    .logo {
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), rgba(120,255,214,0.8));
+      box-shadow: 0 10px 30px rgba(106,167,255,0.18);
+    }
+    .links { display: flex; gap: 14px; flex-wrap: wrap; }
+    .links a {
+      padding: 8px 10px;
+      border-radius: 10px;
+      color: var(--muted);
+    }
+    .links a:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.06s ease, background 0.2s ease;
+    }
+    .btn:hover { background: rgba(255,255,255,0.10); }
+    .btn:active { transform: translateY(1px); }
+    .btn.primary {
+      border-color: rgba(106,167,255,0.35);
+      background: linear-gradient(135deg, rgba(106,167,255,0.35), rgba(120,255,214,0.18));
+    }
+
+    /* Hero */
+    .hero { padding: 56px 0 28px; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .pill {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1.1;
+      letter-spacing: -0.6px;
+    }
+    .lead {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 16.5px;
+    }
+    .hero-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+
+    .panel {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .panel h3 { margin: 0 0 8px; font-size: 16px; }
+    .panel p { margin: 0; color: var(--muted); font-size: 14.5px; }
+
+    /* Sections */
+    section { padding: 22px 0; }
+    .section-title {
+      margin: 0 0 12px;
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: -0.2px;
+    }
+
+    /* Cards */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .card {
+      border: 1px solid var(--border);
+      background: var(--card);
+      border-radius: 16px;
+      padding: 16px;
+      min-height: 140px;
+    }
+    .card h4 { margin: 0 0 6px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14.5px; }
+    .tag {
+      display: inline-flex;
+      margin-top: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(106,167,255,0.28);
+      background: rgba(106,167,255,0.12);
+      color: var(--text);
+      font-size: 12.5px;
+    }
+
+    /* Contact */
+    form { display: grid; gap: 10px; }
+    label { font-size: 14px; color: var(--muted); }
+    input, textarea {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(0,0,0,0.20);
+      color: var(--text);
+      outline: none;
+    }
+    input:focus, textarea:focus {
+      border-color: rgba(106,167,255,0.45);
+      box-shadow: 0 0 0 3px rgba(106,167,255,0.12);
+    }
+    textarea { min-height: 110px; resize: vertical; }
+
+    /* Footer */
+    footer {
+      padding: 26px 0 40px;
+      border-top: 1px solid var(--border);
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .cards { grid-template-columns: 1fr; }
+      .links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="Home">
+        <span class="logo" aria-hidden="true"></span>
+        <span>SampleSite</span>
+      </a>
+
+      <nav class="links" aria-label="Primary navigation">
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <a class="btn primary" href="#contact">Get in touch</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <div class="container hero">
+      <div class="hero-grid">
+        <div>
+          <div class="pill">✨ Simple • Clean • Responsive</div>
+          <h1>A sample HTML web page you can reuse for any project.</h1>
+          <p class="lead">
+            This is a single-file template with a navbar, hero section, feature cards,
+            and a basic contact form. Edit the text and you’re ready to go.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn primary" href="#features">View features</a>
+            <a class="btn" href="#about">Learn more</a>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="Quick info panel">
+          <h3>Quick Tips</h3>
+          <p>
+            Replace <strong>SampleSite</strong> with your brand name, update the links,
+            and add your own sections as needed.
+          </p>
+          <p style="margin-top:10px;">
+            Want a version with Bootstrap, a pricing table, or a login page? Tell me and I’ll generate it.
+          </p>
+        </aside>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="container">
+        <h2 class="section-title">Features</h2>
+
+        <div class="cards">
+          <article class="card">
+            <h4>Responsive layout</h4>
+            <p>Looks good on mobile and desktop, with simple breakpoints.</p>
+            <span class="tag">Mobile-friendly</span>
+          </article>
+
+          <article class="card">
+            <h4>Modern styling</h4>
+            <p>Clean UI using a dark gradient background and soft borders.</p>
+            <span class="tag">Nice defaults</span>
+          </article>
+
+          <article class="card">
+            <h4>Contact form</h4>
+            <p>Basic form structure ready to hook into your backend or email service.</p>
+            <span class="tag">Easy to extend</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <h2 class="section-title">About</h2>
+        <div class="panel">
+          <p>
+            This page is meant as a starter template. You can add sections like testimonials,
+            pricing, FAQs, and a gallery. If you want, I can generate additional pages too
+            (e.g., <strong>login.html</strong>, <strong>pricing.html</strong>, <strong>dashboard.html</strong>).
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title">Contact</h2>
+
+        <div class="panel">
+          <form onsubmit="event.preventDefault(); alert('Form submitted (demo). Add your backend to make it real!');">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required />
+            </div>
+
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <div>
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="How can we help?" required></textarea>
+            </div>
+
+            <button class="btn primary" type="submit">Send message</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> SampleSite • Built with plain HTML + CSS
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
